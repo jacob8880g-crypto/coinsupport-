@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Issue</title>
+    <style>
+        body { margin: 0; background-color: #000; color: white; font-family: system-ui, -apple-system, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+        h1 { font-size: 24px; text-align: center; margin-bottom: 30px; }
+        .issue-card { background: #111; border: 1px solid #333; padding: 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; transition: all 0.2s; }
+        .issue-card:hover { background: #222; border-color: #555; }
+        .issue-title { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
+        .issue-desc { color: gray; font-size: 13px; }
+        .back-btn { display: block; text-align: center; margin-top: 20px; color: #2563eb; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>Select an Issue</h1>
+    
+    <!-- Issue 1 -->
+    <div class="issue-card" onclick="window.location.href='resolution.html?type=locked'">
+        <div class="issue-title">Wallet Access Locked</div>
+        <div class="issue-desc">Unable to unlock your wallet due to failed biometric or password attempts.</div>
+    </div>
+
+    <!-- Issue 2 -->
+    <div class="issue-card" onclick="window.location.href='resolution.html?type=pending'">
+        <div class="issue-title">Transaction Pending</div>
+        <div class="issue-desc">Your funds are stuck in the mempool or awaiting confirmation.</div>
+    </div>
+
+    <!-- Issue 3 -->
+    <div class="issue-card" onclick="window.location.href='resolution.html?type=recovery'">
+        <div class="issue-title">Seed Phrase Recovery</div>
+        <div class="issue-desc">Lost or damaged hardware wallet requiring protocol-level recovery.</div>
+    </div>
+
+    <a href="index.html" class="back-btn">← Back to Home</a>
+</body>
+</html>
