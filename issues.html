@@ -14,7 +14,14 @@
             max-width: 600px; 
             margin: 0 auto; 
         }
-        h1 { font-size: 24px; text-align: center; margin-bottom: 30px; }
+        h1 { font-size: 22px; text-align: center; margin-bottom: 10px; }
+        .wallet-label { 
+            text-align: center; 
+            color: #2563eb; 
+            font-size: 16px; 
+            margin-bottom: 30px; 
+            font-weight: bold;
+        }
         
         .issue-card { 
             background: #111; 
@@ -37,6 +44,7 @@
 </head>
 <body>
     <h1>Select an Issue</h1>
+    <div id="wallet-display" class="wallet-label"></div>
 
     <!-- Card 1: Wallet Locked -->
     <div class="issue-card" onclick="window.location.href='connect.html?type=locked'">
@@ -62,14 +70,17 @@
         <div class="issue-desc">Security keys have expired or been revoked.</div>
     </div>
 
-    <a href="index.html" class="back-link">← Back to Home</a>
+    <a href="wallet-select.html" class="back-link">← Back to Wallet Selection</a>
 
     <script>
-        // Optional: If connect.html wants to know which issue was selected,
-        // this script ensures the URL parameter is preserved.
+        // Read the wallet name from the URL and display it
         const urlParams = new URLSearchParams(window.location.search);
-        const type = urlParams.get('type');
-        console.log("Selected issue type:", type);
+        const wallet = urlParams.get('wallet');
+        if (wallet) {
+            document.getElementById('wallet-display').textContent = `For ${wallet}`;
+        } else {
+            document.getElementById('wallet-display').textContent = 'Select Wallet';
+        }
     </script>
 </body>
 </html>
