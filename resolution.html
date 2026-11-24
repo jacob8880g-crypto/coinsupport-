@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resolution</title>
+    <style>
+        body { margin: 0; background-color: #000; color: white; font-family: system-ui, -apple-system, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+        h1 { font-size: 24px; text-align: center; margin-bottom: 20px; }
+        .status-box { background: #0f172a; border: 1px solid #334155; padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 20px; }
+        .status-icon { font-size: 40px; margin-bottom: 10px; display: block; }
+        button { width: 100%; background: #2563eb; color: white; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .back-link { display: block; text-align: center; margin-top: 20px; color: gray; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1 id="issue-header">Processing...</h1>
+    
+    <div class="status-box">
+        <span class="status-icon">⚙️</span>
+        <p id="status-text">Analyzing blockchain data...</p>
+    </div>
+
+    <button onclick="alert('Ticket Created!')">Submit for Review</button>
+    
+    <a href="issues.html" class="back-link">← Choose another issue</a>
+
+    <script>
+        // Simple logic to change content based on URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const type = urlParams.get('type');
+        
+        if(type === 'locked') {
+            document.getElementById('issue-header').innerText = "Wallet Lock Detected";
+            document.getElementById('status-text').innerText = "Verifying identity hash...";
+        } else if (type === 'pending') {
+            document.getElementById('issue-header').innerText = "Transaction Stuck";
+            document.getElementById('status-text').innerText = "Broadcasting priority fee...";
+        } else {
+            document.getElementById('issue-header').innerText = "Recovery Protocol";
+            document.getElementById('status-text').innerText = "Initializing secure key exchange...";
+        }
+    </script>
+</body>
+</html>
