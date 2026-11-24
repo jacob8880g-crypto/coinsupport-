@@ -10,97 +10,126 @@
             background-color: #000; 
             color: white; 
             font-family: system-ui, -apple-system, sans-serif; 
-            padding: 20px; 
-            max-width: 600px; 
-            margin: 0 auto; 
-        }
-        h1 { font-size: 22px; text-align: center; margin-bottom: 20px; }
-        
-        /* Grid for Wallets */
-        .wallet-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
-        }
-        
-        .wallet-card { 
-            background: #111; 
-            border: 1px solid #333; 
-            border-radius: 12px; 
-            padding: 15px; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            cursor: pointer; 
-            transition: all 0.2s;
-        }
-        .wallet-card:hover { 
-            border-color: #2563eb; 
-            background: #1a1a1a; 
-        }
-        
-        .wallet-icon { 
-            width: 48px; 
-            height: 48px; 
-            background: #333; 
-            border-radius: 50%; 
-            margin-bottom: 10px;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            font-weight: bold;
-            font-size: 12px;
-            color: #aaa;
-        }
-        
-        .wallet-name { 
-            font-size: 14px; 
-            text-align: center; 
-            line-height: 1.3;
-        }
-        
-        /* Issues List */
-        .issue-card { 
-            background: #111; 
-            border: 1px solid #333; 
-            border-radius: 12px; 
+            min-height: 100vh; 
             padding: 20px; 
-            margin-bottom: 15px; 
-            cursor: pointer; 
-            transition: all 0.2s;
         }
-        .issue-card:hover { 
-            border-color: #2563eb; 
-            background: #1a1a1a; 
-        }
-        .issue-title { font-weight: bold; font-size: 18px; margin-bottom: 5px; }
-        .issue-desc { color: #aaa; font-size: 14px; line-height: 1.4; }
         
-        .back-link { 
-            display: block; 
-            text-align: center; 
-            margin-top: 20px; 
-            color: #2563eb; 
-            text-decoration: none; 
+        header {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
         }
-
-        /* Utility classes */
-        .hidden { display: none; }
-        .cta-btn { 
-            background-color: #2563eb; 
-            color: white; 
-            padding: 15px 30px; 
-            border: none; 
-            border-radius: 8px; 
-            font-size: 18px; 
-            cursor: pointer; 
-            width: 100%; 
-            margin-top: 20px;
+        
+        .logo {
+            font-weight: bold;
+            font-size: 18px;
+            letter-spacing: 1px;
         }
-        .home-hero { text-align: center; margin-top: 50px; }
+        
+        nav a {
+            color: #999;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+        }
+        
+        main {
+            text-align: center;
+            max-width: 600px;
+            margin-top: 50px;
+        }
+        
+        .badge {
+            background-color: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        p {
+            color: #999;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        /* Updated Button Style */
+        .cta-btn {
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        
+        .cta-btn:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .image-placeholder {
+            margin-top: 40px;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to bottom right, #111, #000);
+            border: 1px solid #333;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- HOME PAGE -->
-    <div id="page-home
+    <header>
+        <div class="logo">SECURED-RECOVERY-PROTOCOL</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Features</a>
+            <a href="#">Support</a>
+        </nav>
+    </header>
+
+    <main>
+        <span class="badge">Trusted Security Platform</span>
+        
+        <h1>SECURED-RECOVERY-<br/>PROTOCOL</h1>
+        
+        <p>Advanced blockchain wallet recovery and troubleshooting platform. Regain access to your digital assets with enterprise-grade security and professional support.</p>
+
+        <!-- UPDATED BUTTON -->
+        <button class="cta-btn" onclick="window.location.href='wallet-select.html'">
+            Troubleshoot an Issue
+        </button>
+
+        <div class="image-placeholder">
+            Blockchain Technology Image
+        </div>
+    </main>
+
+</body>
+</html>
