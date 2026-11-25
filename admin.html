@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Issue Submissions</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold tracking-wider">Issue Submissions</h1>
+            <a href="#" class="text-gray-400 hover:text-white transition">Exit</a>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading" class="flex justify-center py-20">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Data Table Container -->
+        <div id="dataContainer" class="hidden overflow-x-auto bg-gray-900/50 rounded-xl border border-gray-800">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-black/50 text-gray-400 uppercase font-medium">
+                    <tr>
+                        <th class="p-4">Date</th>
+                        <th class="p-4">Wallet Address</th>
+                        <th class="p-4">Email</th>
+                        <th class="p-4">Issue Type</th>
+                        <th class="p-4">Description</th>
+                    </tr>
+                </thead>
+                <tbody id="issuesTableBody" class="divide-y divide-gray-800">
+                    <!-- Rows will be injected here by JS -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-20 text-gray-500">
+            No issues reported yet.
+        </div>
+    </div>
+
+    <!-- FIREBASE LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+        // Your Web App's Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC33I7HRwiKo7DtdRsdtdK6OnqDwAquJfI",
+            authDomain: "coinsupport-8b036.firebaseapp.com",
+            databaseURL: "https://coinsupport-8b036-default-rtdb.firebaseio.com",
+            projectId: "coinsupport-8b036",
+            storageBucket: "coinsupport-8b036.firebasestorage.app",
+            messagingSenderId: "575774102570",
+            appId: "1:575774102570:web:1d0c34b60807dfb2c75f53",
+            measurementId: "G-YGCSNX4H9L"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // DOM Elements
+        const loadingEl = document.getElementById('loading');
+        const containerEl = document.getElementById('dataContainer');
+        const emptyEl = document.getElementById('emptyState');
+        const tbody = document.getElementById('issuesTableBody');
+
+        // Listen for real-time updates
+        const issuesRef = ref(db, 'issues');
+        
+        onValue(issuesRef, (snapshot) => {
+            loadingEl.classList.add('hidden');
+            
+            // Get data as a plain object
+            const data = snapshot.val();
+
+            if (!data) {
+                emptyEl.classList.remove('hidden');
+                return;
+            }
+
+            emptyEl.classList.add('hidden');
+            containerEl.classList.remove('hidden');
+
+            // Convert object to array and reverse to show newest first
+            const issuesArray = Object.entries(data).reverse();
+
+            tbody.innerHTML = ''; // Clear existing rows
+
+            issuesArray.forEach(([key, issue]) => {
+                const row = document.createElement('tr');
+                row.className = "hover:bg-gray-800/50 transition";
+                
+                // Format date nicely
+                const dateObj = new Date(issue.timestamp);
+                const formattedDate = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString();
+
+                row.innerHTML = `
+                    <td class="p-4 text-gray-400 whitespace-nowrap">${formattedDate}</td>
+                    <td class="p-4 font-mono text-xs break-all max-w-xs" title="${issue.walletAddress}">${issue.walletAddress || 'N/A'}</td>
+                    <td class="p-4">${issue.email || 'N/A'}</td>
+                    <td class="p-4"><span class="bg-blue-900/50 text-blue-400 px-2 py-1 rounded text-xs font-semibold">${issue.issueType}</span></td>
+                    <td class="p-4 max-w-md truncate" title="${issue.description}">${issue.description}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }, (error) => {
+            console.error("Error fetching data:", error);
+            loadingEl.classList.add('hidden');
+            alert("Failed to load data. Check console.");
+        });
+    </script>
+</body>
+</html>
