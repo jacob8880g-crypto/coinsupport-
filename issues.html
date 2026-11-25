@@ -130,8 +130,9 @@
     </script>
     <!-- FIREBASE LOGIC FOR ISSUES.HTML -->
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    // UPDATED: Using a valid version (10.12.0)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyC33I7HRwiKo7DtdRsdtdK6OnqDwAquJfI",
@@ -144,11 +145,9 @@
         measurementId: "G-YGCSNX4H9L"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Select DOM elements
     const form = document.getElementById('issueForm');
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
@@ -160,19 +159,15 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            // UI Loading State
             submitBtn.disabled = true;
             btnText.textContent = "Submitting...";
             btnIcon.classList.add('hidden');
             spinner.classList.remove('hidden');
             statusMsg.textContent = "";
 
-            // Gather Data
             const issueType = document.getElementById('issueType').value;
             const description = document.getElementById('description').value.trim();
             
-            // Try to get wallet address from LocalStorage (if coming from wallet-select)
-            // Otherwise, try to grab it from an input field on this page if it exists
             let walletAddress = localStorage.getItem('selectedWallet') || '';
             const walletInput = document.getElementById('walletAddress');
             if (walletInput && !walletAddress) {
@@ -182,10 +177,8 @@
             const email = localStorage.getItem('supportEmail') || '';
 
             try {
-                // Create a unique reference for this issue
                 const newIssueRef = push(ref(db), 'issues');
                 
-                // Save data to Firebase
                 await set(newIssueRef, {
                     email: email,
                     walletAddress: walletAddress,
@@ -195,9 +188,8 @@
                     status: 'new'
                 });
 
-                // Success State
                 btnText.textContent = "Sent!";
-                submitBtn.style.background = "#22c55e"; // Green
+                submitBtn.style.background = "#22c55e"; 
 
                 setTimeout(() => {
                     window.location.href = "confirmation.html";
@@ -206,11 +198,10 @@
             } catch (error) {
                 console.error("Firebase Error:", error);
                 btnText.textContent = "Error";
-                submitBtn.style.background = "#ef4444"; // Red
+                submitBtn.style.background = "#ef4444"; 
                 statusMsg.textContent = "Failed to send. Please try again.";
                 statusMsg.className = "text-center text-sm mt-2 h-5 text-red-500";
                 
-                // Reset button after delay
                 setTimeout(() => {
                     submitBtn.disabled = false;
                     btnText.textContent = "Submit Issue";
