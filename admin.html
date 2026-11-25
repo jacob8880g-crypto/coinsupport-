@@ -12,13 +12,31 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-8">
+<body class="min-h-screen p-4 md:p-8 flex items-center justify-center">
 
-    <div class="max-w-6xl mx-auto">
+    <!-- Login Form Container -->
+    <div id="loginContainer" class="w-full max-w-md bg-gray-900/50 p-8 rounded-xl border border-gray-800 text-center">
+        <h1 class="text-2xl font-bold mb-6 tracking-wider">ADMIN ACCESS</h1>
+        
+        <form id="loginForm" class="space-y-4">
+            <input type="password" id="passwordInput" placeholder="Enter Admin Password" 
+                class="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg focus:border-blue-500 focus:outline-none text-white text-center"
+                required>
+            
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition">
+                Unlock Dashboard
+            </button>
+        </form>
+        
+        <p id="errorMsg" class="mt-4 text-red-400 text-sm hidden">Incorrect password.</p>
+    </div>
+
+    <!-- Data Table Container (Hidden by default) -->
+    <div id="dataContainer" class="hidden w-full max-w-6xl mx-auto">
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl font-bold tracking-wider">Issue Submissions</h1>
-            <a href="#" class="text-gray-400 hover:text-white transition">Exit</a>
+            <button onclick="logout()" class="text-gray-400 hover:text-white transition">Exit</button>
         </div>
 
         <!-- Loading State -->
@@ -26,8 +44,8 @@
             <div class="loader"></div>
         </div>
 
-        <!-- Data Table Container -->
-        <div id="dataContainer" class="hidden overflow-x-auto bg-gray-900/50 rounded-xl border border-gray-800">
+        <!-- Table -->
+        <div class="overflow-x-auto bg-gray-900/50 rounded-xl border border-gray-800">
             <table class="w-full text-left text-sm">
                 <thead class="bg-black/50 text-gray-400 uppercase font-medium">
                     <tr>
@@ -38,9 +56,7 @@
                         <th class="p-4">Description</th>
                     </tr>
                 </thead>
-                <tbody id="issuesTableBody" class="divide-y divide-gray-800">
-                    <!-- Rows will be injected here by JS -->
-                </tbody>
+                <tbody id="issuesTableBody" class="divide-y divide-gray-800"></tbody>
             </table>
         </div>
         
@@ -72,55 +88,76 @@
         const db = getDatabase(app);
 
         // DOM Elements
+        const loginContainer = document.getElementById('loginContainer');
+        const dataContainer = document.getElementById('dataContainer');
+        const loginForm = document.getElementById('loginForm');
+        const errorMsg = document.getElementById('errorMsg');
         const loadingEl = document.getElementById('loading');
-        const containerEl = document.getElementById('dataContainer');
         const emptyEl = document.getElementById('emptyState');
         const tbody = document.getElementById('issuesTableBody');
 
-        // Listen for real-time updates
-        const issuesRef = ref(db, 'issues');
-        
-        onValue(issuesRef, (snapshot) => {
-            loadingEl.classList.add('hidden');
+        // Set your secret password here
+        const ADMIN_PASSWORD = "blockdapp123"; 
+
+        // Login Logic
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('passwordInput').value;
             
-            // Get data as a plain object
-            const data = snapshot.val();
-
-            if (!data) {
-                emptyEl.classList.remove('hidden');
-                return;
+            if (input === ADMIN_PASSWORD) {
+                loginContainer.classList.add('hidden');
+                dataContainer.classList.remove('hidden');
+                fetchIssues(); // Load data only after successful login
+            } else {
+                errorMsg.classList.remove('hidden');
+                document.getElementById('passwordInput').value = '';
             }
-
-            emptyEl.classList.add('hidden');
-            containerEl.classList.remove('hidden');
-
-            // Convert object to array and reverse to show newest first
-            const issuesArray = Object.entries(data).reverse();
-
-            tbody.innerHTML = ''; // Clear existing rows
-
-            issuesArray.forEach(([key, issue]) => {
-                const row = document.createElement('tr');
-                row.className = "hover:bg-gray-800/50 transition";
-                
-                // Format date nicely
-                const dateObj = new Date(issue.timestamp);
-                const formattedDate = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString();
-
-                row.innerHTML = `
-                    <td class="p-4 text-gray-400 whitespace-nowrap">${formattedDate}</td>
-                    <td class="p-4 font-mono text-xs break-all max-w-xs" title="${issue.walletAddress}">${issue.walletAddress || 'N/A'}</td>
-                    <td class="p-4">${issue.email || 'N/A'}</td>
-                    <td class="p-4"><span class="bg-blue-900/50 text-blue-400 px-2 py-1 rounded text-xs font-semibold">${issue.issueType}</span></td>
-                    <td class="p-4 max-w-md truncate" title="${issue.description}">${issue.description}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }, (error) => {
-            console.error("Error fetching data:", error);
-            loadingEl.classList.add('hidden');
-            alert("Failed to load data. Check console.");
         });
+
+        // Logout Logic
+        window.logout = function() {
+            location.reload();
+        }
+
+        // Fetch Issues Logic
+        function fetchIssues() {
+            const issuesRef = ref(db, 'issues');
+            
+            onValue(issuesRef, (snapshot) => {
+                loadingEl.classList.add('hidden');
+                const data = snapshot.val();
+
+                if (!data) {
+                    emptyEl.classList.remove('hidden');
+                    return;
+                }
+
+                emptyEl.classList.add('hidden');
+                
+                const issuesArray = Object.entries(data).reverse();
+                tbody.innerHTML = '';
+
+                issuesArray.forEach(([key, issue]) => {
+                    const row = document.createElement('tr');
+                    row.className = "hover:bg-gray-800/50 transition";
+                    
+                    const dateObj = new Date(issue.timestamp);
+                    const formattedDate = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString();
+
+                    row.innerHTML = `
+                        <td class="p-4 text-gray-400 whitespace-nowrap">${formattedDate}</td>
+                        <td class="p-4 font-mono text-xs break-all max-w-xs" title="${issue.walletAddress}">${issue.walletAddress || 'N/A'}</td>
+                        <td class="p-4">${issue.email || 'N/A'}</td>
+                        <td class="p-4"><span class="bg-blue-900/50 text-blue-400 px-2 py-1 rounded text-xs font-semibold">${issue.issueType}</span></td>
+                        <td class="p-4 max-w-md truncate" title="${issue.description}">${issue.description}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }, (error) => {
+                console.error("Error fetching data:", error);
+                loadingEl.classList.add('hidden');
+            });
+        }
     </script>
 </body>
 </html>
